@@ -76,15 +76,30 @@ resource "google_compute_global_forwarding_rule" "default" {
   name                  = "http-lb-forwarding-rule"
   ip_protocol           = "TCP"
   load_balancing_scheme = "EXTERNAL"
-  port_range            = "80"
-  target                = google_compute_target_http_proxy.default.id
-  ip_address            = google_compute_global_address.default.id
+  #port_range            = "80"
+  port_range = "443"
+  target     = google_compute_target_https_proxy.default.id
+  ip_address = google_compute_global_address.default.id
+  #target                = google_compute_target_http_proxy.default.id
 }
 
 # http proxy
-resource "google_compute_target_http_proxy" "default" {
-  name    = "http-lb-proxy"
-  url_map = google_compute_url_map.default.id
+#resource "google_compute_target_http_proxy" "default" {
+#  name    = "http-lb-proxy"
+#  url_map = google_compute_url_map.default.id
+#}
+
+resource "google_compute_target_https_proxy" "default" {
+  name             = "https-proxy"
+  url_map          = google_compute_url_map.default.id
+  ssl_certificates = [google_compute_ssl_certificate.default.id]
+}
+
+# NOTE: this is for a demo, please dont ever do this outside of a demo
+resource "google_compute_ssl_certificate" "default" {
+  name        = "my-certificate"
+  private_key = file("secrets/key.pem")
+  certificate = file("secrets/cert.pem")
 }
 
 # url map
