@@ -123,7 +123,3 @@ resource "google_compute_backend_bucket" "default" {
     serve_while_stale = 86400
   }
 }
-
-output "ip" {
-  value = google_compute_global_address.default.address
-}
