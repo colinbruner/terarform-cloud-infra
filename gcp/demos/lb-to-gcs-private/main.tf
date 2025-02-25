@@ -15,7 +15,6 @@ resource "google_compute_global_forwarding_rule" "default" {
   port_range = "443"
   target     = google_compute_target_https_proxy.default.id
   ip_address = google_compute_global_address.default.id
-  #target                = google_compute_target_http_proxy.default.id
 }
 
 resource "google_compute_target_https_proxy" "default" {
@@ -50,7 +49,7 @@ resource "google_compute_global_network_endpoint" "this" {
   provider                      = google-beta
   global_network_endpoint_group = google_compute_global_network_endpoint_group.this.name
   fqdn                          = "${google_storage_bucket.default.name}.storage.googleapis.com"
-  port                          = 80 # NOTE: 502 when HTTPS, this is port on GCS Bucket that LB forwards to
+  port                          = 443
 }
 
 ###

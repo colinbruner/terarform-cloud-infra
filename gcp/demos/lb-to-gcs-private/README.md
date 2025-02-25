@@ -10,7 +10,7 @@ Loosely Terraform-ified from: https://medium.com/@thetechbytes/private-gcs-bucke
 # after reconfiguring backend, run
 $ terraform init
 $ terraform apply
-$ terraform out
+$ terraform output
 # returns curl command with IP
 ```
 
