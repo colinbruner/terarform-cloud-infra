@@ -1,3 +1,5 @@
+data "google_project" "this" {}
+
 resource "random_id" "this" {
   byte_length = 2
 }
@@ -6,14 +8,14 @@ resource "random_id" "this" {
 # Bucket
 ###
 resource "google_storage_bucket" "this" {
-  name     = "${var.name}-backups-${random_id.this.hex}"
+  name     = "backup-unas-vol-${var.name}-${random_id.this.hex}"
   location = "US-CENTRAL1" # Cheapest
 
   public_access_prevention    = "enforced"
   uniform_bucket_level_access = true
 
   encryption {
-    default_kms_key_name = google_kms_crypto_key.backups.id
+    default_kms_key_name = google_kms_crypto_key.this.id
   }
 
   lifecycle_rule {
