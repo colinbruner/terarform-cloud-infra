@@ -1,4 +1,4 @@
-output "backups_service_account" {
+output "service_account" {
   sensitive = true
   value = {
     email = google_service_account.this.email
