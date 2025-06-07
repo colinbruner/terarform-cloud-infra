@@ -1,13 +1,4 @@
-# Required via docs: https://cloud.google.com/storage/docs/encryption/using-customer-managed-keys
-resource "google_project_iam_binding" "kms_crypto_key_encrypter_decrypter" {
-  project = data.google_project.this.project_id
-  role    = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
-
-  members = [
-    google_service_account.this.member
-  ]
-}
-
+# Create kingring, key, and apply IAM binding to SA
 resource "google_kms_key_ring" "this" {
   name     = "${var.name}-backups-keyring"
   location = "us-central1"
@@ -23,4 +14,13 @@ resource "google_kms_crypto_key" "this" {
   }
 }
 
+# Required via docs: https://cloud.google.com/storage/docs/encryption/using-customer-managed-keys
+resource "google_kms_crypto_key_iam_binding" "this" {
+  crypto_key_id = google_kms_crypto_key.this.id
+  role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+
+  members = [
+    google_service_account.this.member
+  ]
+}
 
