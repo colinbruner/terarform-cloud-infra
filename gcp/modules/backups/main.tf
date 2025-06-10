@@ -49,13 +49,13 @@ resource "google_storage_bucket" "this" {
     }
   }
 
-  # Delete noncurrent object versions after 30 days
+  # Delete noncurrent object versions after 10 days
   lifecycle_rule {
     action {
       type = "Delete"
     }
     condition {
-      days_since_noncurrent_time = 30
+      days_since_noncurrent_time = 10
     }
   }
 
